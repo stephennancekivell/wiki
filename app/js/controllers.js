@@ -1,12 +1,24 @@
 'use strict';
 
-/* Controllers */
+function ViewControl($scope, $location, $routeParams, Documents) {
+	$scope.document = Documents.get({'id': $routeParams.id});
 
-
-function MyCtrl1() {}
-MyCtrl1.$inject = [];
-
-
-function MyCtrl2() {
+	$scope.remove = function(){
+		$scope.document.$delete({'id': $scope.document.id});
+		$location.path('/');
+	}
 }
-MyCtrl2.$inject = [];
+
+function NewDocumentCtrl($scope, Documents){
+	$scope.document = new Documents({title:'title', body:'content'});
+	$scope.document.$save();
+
+	$scope.remove = function(){
+		$scope.document.$delete({'id': $scope.document.id});
+		$location.path('/');
+	}
+}
+
+function ListControl($scope, Documents) {
+	$scope.documents = Documents.query();
+}
